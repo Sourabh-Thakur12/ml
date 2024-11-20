@@ -7,11 +7,11 @@ import tensorflow as tf
 # importing datset
 mnist = tf.keras.datasets.mnist
 # loading already splitted data in variable touples
-(x_train, y_train), (x_test, y_test) = mnist.load_data()
+(X_train, y_train), (X_test, y_test) = mnist.load_data()
 
 # NORAMLIZE the pixels of the data 
-x_train = tf.keras.utils.normalize(x_train, axis = 1)
-x_test = tf.keras.utils.normalize(x_test, axis = 1)
+X_train = tf.keras.utils.normalize(X_train, axis = 1)
+X_test = tf.keras.utils.normalize(X_test, axis = 1)
 
 # Creating neural network model
 # model = tf.keras.models.Sequential()
@@ -22,20 +22,21 @@ x_test = tf.keras.utils.normalize(x_test, axis = 1)
 
 # model.compile(optimizer = 'adam' , loss = 'sparse_categorical_crossentropy', metrics = ['accuracy'])
 
-# model.fit(x_train, y_train, epochs=5)
+# model.fit(X_train, y_train, epochs=20)
 
 # model.save('Digi_recognition.keras')
 
-model = tf.keras.models.load_model('Digi_recognition.keras')
+# model = tf.keras.models.load_model('D:/CODING/ML/Projects-Ai-Ml/Handwritten Recognisation/Handwritten_Recognisation.keras')
+model = tf.keras.models.load_model("D:/CODING/ML/digit-recognition/Digi_recognition.keras")
 
-loss, accuracy = model.evaluate(x_test, y_test)
-print(loss)
-print(accuracy)
+score = model.evaluate(X_test, y_test)
+print(score[0])
+print(score[1])
 
 image_number = 0
-while os.path.isfile(f"./sample_digits/digit{image_number}.png"):
+while os.path.isfile(f"D:/CODING/ML/digit-recognition/sample_digits/digit{image_number}.png"):
     try:
-        img = cv2.imread(f'./sample_digits/digit{image_number}.png')[:,:,0]
+        img = cv2.imread(f'D:/CODING/ML/digit-recognition/sample_digits/digit{image_number}.png')[:,:,0]
         img = np.invert(np.array([img]))
         prediction = model.predict(img)
         print(f'This digit is probably a {np.argmax(prediction)}')
